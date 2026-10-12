@@ -1,0 +1,42 @@
+dataset: ntu60_cv
+model: model.STDTNet.Model
+model_args:
+  num_class: 60
+  num_point: 25
+  num_person: 1
+  in_channels: 3
+  num_frame: 64
+  graph: graph.ntu_rgb_d.Graph
+  drop_out: 0.1
+feeder: feeders.feeder_skeleton.Feeder
+train_feeder_args:
+  data_path: data/processed/ntu60_cv/train
+  window_size: 64
+  graph: graph.ntu_rgb_d.Graph
+  root_joint: 0
+  reference_bone: &id001
+  - 0
+  - 20
+  training: true
+test_feeder_args:
+  data_path: data/processed/ntu60_cv/test
+  window_size: 64
+  graph: graph.ntu_rgb_d.Graph
+  root_joint: 0
+  reference_bone: *id001
+  training: false
+optimizer: AdamW
+base_lr: 0.001
+weight_decay: 0.05
+batch_size: 64
+test_batch_size: 64
+num_epoch: 100
+warm_up_epoch: 5
+gradient_clip: 1.0
+use_amp: true
+model_selection: final
+subject_disjoint: false
+seed: 0
+device: cuda:0
+num_workers: 4
+work_dir: work_dir/ntu60_cv/seed0

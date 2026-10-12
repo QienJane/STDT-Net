@@ -1,0 +1,49 @@
+dataset: robogesture8
+model: model.STDTNet.Model
+model_args:
+  num_class: 8
+  num_point: 21
+  num_person: 1
+  in_channels: 3
+  num_frame: 48
+  graph: graph.robogesture.Graph
+  drop_out: 0.1
+feeder: feeders.feeder_skeleton.Feeder
+train_feeder_args:
+  data_path: data/processed/robogesture8/train
+  window_size: 48
+  graph: graph.robogesture.Graph
+  root_joint: 0
+  reference_bone: &id001
+  - 0
+  - 9
+  training: true
+test_feeder_args:
+  data_path: data/processed/robogesture8/test
+  window_size: 48
+  graph: graph.robogesture.Graph
+  root_joint: 0
+  reference_bone: *id001
+  training: false
+optimizer: AdamW
+base_lr: 0.0005
+weight_decay: 0.05
+batch_size: 32
+test_batch_size: 32
+num_epoch: 80
+warm_up_epoch: 5
+gradient_clip: 1.0
+use_amp: true
+model_selection: validation
+subject_disjoint: true
+seed: 0
+device: cuda:0
+num_workers: 4
+work_dir: work_dir/robogesture8/seed0
+val_feeder_args:
+  data_path: data/processed/robogesture8/val
+  window_size: 48
+  graph: graph.robogesture.Graph
+  root_joint: 0
+  reference_bone: *id001
+  training: false
